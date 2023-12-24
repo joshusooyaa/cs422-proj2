@@ -1,0 +1,200 @@
+<!--
+Template and styling for the New forecast page, where a user can choose the
+number of credits they want to take per term, as well as the starting year and
+term for the forecast. 
+
+2023-05-30 - Nathaniel Mason : Added initial version of template
+
+
+-->
+
+{% extends 'forecast/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Generate New Forecast</title>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.jquery.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/jquery-ui.js">
+
+<style>
+	@font-face { font-family: AlteHaasGrotesk; src: url("{% static 'fonts/AlteHaasGroteskRegular.ttf' %}"); } 
+ @font-face { font-family: AlteHaasGrotesk; font-weight: bold; src: url("{% static 'fonts/AlteHaasGroteskBold.ttf' %}");}
+		@font-face { font-family: Lato; src: url("{% static 'fonts/Lato-Regular.ttf' %}"); } 
+    html {
+max-width: 100%;
+overflow-x: hidden;
+min-height:100%;
+			    background:linear-gradient(0deg, rgba(4, 14, 28, 0.9), rgba(4, 14, 28, 0.9)), url("{% static 'img/knight2.jpeg' %}") !important;
+
+    background-size:cover;
+}
+
+body {
+	    background:linear-gradient(0deg, rgba(4, 14, 28, 0.9), rgba(4, 14, 28, 0.9)), url("{% static 'img/knight2.jpeg' %}") !important;
+text-align: center;
+
+padding-bottom: 200px;
+font-family: AlteHaasGrotesk, sans-serif;
+font-style: normal;
+        font-weight: 300;
+color: green;
+
+}
+    
+.input-number {
+	width: 60px;
+	border-radius: 0px;
+}
+	
+	.hidden {
+		display: none;
+	}
+	#submitbutton {
+		padding: 25px 40px;
+		font-size: 14pt;
+		letter-spacing: 1px;
+		font-family: Lato;
+		margin-left: -4px;
+	}
+    
+    .chosen-container-multi .chosen-choices li.search-choice { /*hi erin style deletable bubbles*/
+position: relative;
+margin: 3px 5px 3px 0;
+padding: 3px 20px 3px 5px;
+border: 3px solid #aaa;
+max-width: 100%;
+border-radius: 30px;
+background-color: #eeeeee;
+background-image: -webkit-gradient(linear, left top, left bottom, color-stop(20%, #f4f4f4), color-stop(50%, #f0f0f0), color-stop(52%, #e8e8e8), to(#eee));
+background-image: linear-gradient(#95703A 20%, #95703A 50%, #95703A 52%, #95703A 100%);
+background-size: 100% 19px;
+background-repeat: repeat-x;
+background-clip: padding-box;
+-webkit-box-shadow: 0 0 2px #fff inset, 0 1px 0 rgba(0, 0, 0, 0.05);
+        box-shadow: 0 0 2px #fff inset, 0 1px 0 rgba(0, 0, 0, 0.05);
+color: #d9d0c1;
+line-height: 13px;
+cursor: default;
+}
+	
+	#preset_choice {
+			padding: 10px 0 10px 10px;
+            border: 4px solid #3A8795;
+            border-radius: 40px;
+            color: #d9d0c1;
+			letter-spacing: 1px;
+			font-family: Lato;
+			/*background:rgba(149,112,58,0.3);*/
+			background: rgba(58,135,149,0.3);
+			transition: background 1s ease;
+	}
+	
+		#preset_choice:hover {
+			background: rgba(58,135,149,0.7);
+			cursor: default;
+	}
+	
+	.preset {
+
+	}
+	
+	h3 {
+		font-size: 23pt;
+		color: #d9d0c1;
+	}
+	#tips {
+		font-size: 12pt;
+		padding: 5px 8px;
+		border-radius: 20px;
+		background: rgba(58,135,149,0.2);
+	}
+	.tipslist {
+		color:#875711;
+		
+	}
+    
+	h4 {
+		color: #95703A;
+	}
+	.preset {
+		display: inline-block;
+		padding: 15px 15px;
+		border-radius: 20px;
+		background: rgba(58,135,149,0.2);
+		
+	}
+	.preset-inner {
+		padding: 10px;
+		border-radius: 20px;
+		border: 3px solid rgba(58,135,149,0.3);
+	}
+	
+	.chzn-select{
+		border: 3px solid rgba(58,135,149,1);
+		border-radius: 20px;
+		font-family: Lato;
+		font-size: 12pt;
+		background: transparent;
+		padding: 5px 10px;
+		color: #d9d0c1;
+		transition: all 0.5s ease;
+	}
+	
+		.chzn-select:hover{
+		border: 3px solid rgba(58,135,149,1);
+		border-radius: 20px;
+		font-family: Lato;
+		font-size: 12pt;
+		background:  rgba(58,135,149,0.3);
+		padding: 5px 10px;
+		color: #d9d0c1;
+	}
+</style>
+</head>
+
+<body>
+	{% if messages %}
+        {% for message in messages %}
+            <p><b>{{ message }}</b></p>
+        {% endfor %}
+    {% endif %}
+
+    <h3><br><br>Select credits per term, target term and target year to tailor<br> your degree plan to your learning style<br><br></h3>
+    <form method="post">
+        {% csrf_token %}
+
+		<h4><b id="tips">Tips:</b><br><br>
+			<span class="tipslist">Credits per term:</span> The maximum number of credits to be taken each term<br>
+			<span class="tipslist">Target term:</span> The beginning term of the degree plan<br>
+			<span class="tipslist">Target year:</span> The beginning year of the degree plan<br>
+			
+		</h4>
+
+		<div class="preset">
+			<div class="preset-inner">
+        	{{ preset_form.as_p }}
+			</div>
+		</div>
+		
+		<!--
+		<div class="choices">
+        	{{ user_choices.as_p }}
+		</div>
+		-->
+		
+        <button class="hidden" id="generate" type="submit" name="Submit">Generate New</button>
+		<br><br><br><br>
+		<label class="homelog" for="generate" id="submitbutton">GENERATE DEGREE PLAN</label>
+    </form>
+
+</body>
+</html>
+
+{% endblock %}

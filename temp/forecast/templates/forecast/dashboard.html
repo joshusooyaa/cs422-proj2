@@ -1,0 +1,207 @@
+<!--
+Template and styling for the dashboard that a user sees once they login. This
+shows the '+' button allowing a user to create a new degree plan, as well as
+any previously generated and saved degree plans
+
+2023-05-23 - Nathaniel Mason : added courses left button, still need to create separate classes list template
+2023-05-30 - Nathaniel Mason : added new forecast button to go to template
+
+-->
+
+{% extends 'forecast/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+		<script src="{% static 'js/navbar.js' %}"></script>
+
+	<link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+  <style>
+	  @font-face { font-family: AlteHaasGrotesk; src: url("{% static 'fonts/AlteHaasGroteskRegular.ttf' %}"); } 
+ @font-face { font-family: AlteHaasGrotesk; font-weight: bold; src: url("{% static 'fonts/AlteHaasGroteskBold.ttf' %}");}
+		@font-face { font-family: Lato; src: url("{% static 'fonts/Lato-Regular.ttf' %}"); } 
+	  
+	  		html {
+	max-width: 100%;
+    overflow-x: hidden;
+	min-height:100%;
+      background:linear-gradient(0deg, rgba(4, 14, 28, 0.9), rgba(4, 14, 28, 0.9)), url("{% static 'img/knight2.jpeg' %}");
+      background-size:cover;
+}
+    body {
+      
+      margin: 0;
+      padding: 0;
+		background:rgba(0,0,0,0.00);
+    }
+	  
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 20px;
+		
+    }
+
+    .header {
+      padding: 20px;
+      text-align: center;
+    }
+
+    .content {
+      padding: 20px;
+      margin-top: 20px;
+    }
+
+    .content h1 {
+      margin-top: 0;
+    }
+	  
+	  h1 {
+		  font-size: 46pt;
+		  color: #d9d0c1;
+	  }
+
+    .logout {
+      text-align: right;
+      margin-top: 20px;
+    }
+
+    .logout a {
+      color: #333;
+      text-decoration: none;
+    }
+	  
+	  #coursesleft {
+		  padding: 10px 20px;
+		  font-family: Lato;
+		  font-size: 12pt;
+		  color: #d9d0c1;
+		  letter-spacing: 1px;
+	  }
+	  
+	  h2 {
+		  font-size: 20pt;
+		  color: #d9d0c1;
+	  }
+	  
+	  #generate {
+
+		  font-size: 80pt;
+	  }
+	  .degreeplan {
+		  padding: 30px 70px 45px 70px;
+		  border-radius: 30px;
+		  margin:8px;
+	  }
+	  a {
+		  color:#d9d0c1;
+	  }
+	  .empty{
+		  padding: 25px 65px 40px 65px;
+		  background: rgba(0,0,0,0.00);
+		  font-size: 80pt;
+		  pointer-events: none;
+		  border: 5px dashed #95703A;
+		  
+	  }
+	  
+	  .clear {
+		  color: rgba(0,0,0,0.00);
+	  }
+	  
+	  .saved {
+		  width: 210px;
+		  height: 200px;
+		  padding: 35px 25px 40px 25px;
+		  background: rgba(0,0,0,0.00);
+		  font-size: 80pt;
+		  border: 6px solid #95703A;
+		  border-radius: 30px;
+		  font-size: 16pt;
+		  margin-right: 10px;
+		  
+	  }
+	  .saved:hover{
+		  border: 5px solid #3A8795;
+		  background:rgba(58,135,149,0.1);
+	  }
+	  
+	  td {
+		  align-items: center;
+		  align-content: center;
+	  }
+	  
+	  
+	  
+	 
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Dashboard</h1>
+    </div>
+	          
+	  <a href="courses_left" role="button" id="coursesleft"
+        class="btn btn-secondary popover-test homelog" title="Popover title" 
+        data-content="Popover body content is set in this attribute.">
+            VIEW YOUR REMAINING COURSES
+        </a>
+
+        <br>
+        <br>
+
+
+
+    <div class="content">
+      <h2>Your Degree Plans</h2>
+		<table>
+			<tr> <!--First row has the plus button, then 3 boxes -->
+				<td>
+					
+							<a href="new_forecast" role="button" 
+					class="btn btn-secondary popover-test" title="Popover title" 
+					data-content="Popover body content is set in this attribute."><div class="homelog degreeplan" id="generate">
+						&#43;</div>
+					</a>
+					
+				</td>
+				{% if ts_raw_and_display is not empty %}
+					{% for tstmp_raw, tstmp_display in ts_raw_and_display %}
+						
+					<td>
+						<form action="retrieve_forecast" method="post">
+							<!-- <div class="homelog degreeplan empty"></div> -->
+								{% csrf_token %}
+								<input type="hidden" name="timestamp_str" value="{{ tstmp_raw }}">
+								<button type="submit" class="homelog saved">{{ tstmp_display }}</button>
+							
+						</form>
+					</td>
+					
+						<!-- if (forloop.counter0 + 2)|divisibleby:4 -->
+						{% if forloop.counter0 == 2 or forloop.counter0 == 6 or forloop.counter0 == 10 or forloop.counter0 == 14 or forloop.counter0 == 18 or forloop.counter0 == 22 or forloop.counter0 == 26 or forloop.counter0 == 30 or forloop.counter0 == 34 or forloop.counter0 == 38 %}
+				
+					</tr>
+	  				<tr>
+					</tr>
+	  					{% endif %}
+					
+					{% endfor %}
+				{% endif %}
+			</tr>
+		</table>
+      <p>
+
+    </p>
+    </div>
+  </div>
+</body>
+</html>
+
+{% endblock %}
