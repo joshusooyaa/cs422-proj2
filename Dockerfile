@@ -4,7 +4,8 @@ ENV PYTHONUNBUFFERED=1
 EXPOSE 8080
 MAINTAINER Adam Case "adamrichcase@gmail.com"
 RUN apt-get update -y
-RUN apt-get install -y python3-pip python-dev build-essential python3-nose
+# RUN apt-get install -y python3-pip python-dev build-essential python3-nose
+RUN pip install --upgrade pip
 COPY . /app
 WORKDIR /app
 RUN pip3 install -r requirements.txt
