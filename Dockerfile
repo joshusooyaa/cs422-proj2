@@ -12,4 +12,4 @@ RUN pip3 install -r requirements.txt
 RUN python manage.py migrate
 RUN python manage.py import_courses forecast/recommendcourses.xlsx
 WORKDIR /app/cs_degree_planner
-ENTRYPOINT ["gunicorn", "--bind", "0.0.0.0:8000", "cs_degree_planner.wsgi"]
+ENTRYPOINT ["gunicorn", "--bind", "0.0.0.0:8000", "wsgi"]
