@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'cs_degree_planner.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# Heroku
+
 import dj_database_url
 
 DATABASES = {
