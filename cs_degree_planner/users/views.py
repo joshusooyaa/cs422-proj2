@@ -6,6 +6,7 @@ involving
     - login 
     - account creation 
     - logout 
+    - user account management 
 
 2023-05-19 - Nathaniel mason : add create_user view
 2023-05-22 - Josh Sawyer     : add login view

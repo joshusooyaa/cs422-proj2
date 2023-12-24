@@ -1,0 +1,1 @@
+web: gunicorn cs_degree_planner.wsgi

@@ -1,14 +1,5 @@
 """
-The URL paths for 
-    - the root (homepage) of the webapp
-    - the account creation form
-    - the login form 
-    - the logout page 
-    - user account management, including 
-        - the general account update page, where the user can select which part
-          of their account they want to update 
-        - the edit courses page, where the user can edit their course history 
-        - the edit interests page, where the user can edit their interests
+TODO: file description
 
 2023-05-19 - Nathaniel mason : add create_user url path
 2023-05-22 - Josh Sawyer     : add login url path
